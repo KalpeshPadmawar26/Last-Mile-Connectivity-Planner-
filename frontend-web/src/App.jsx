@@ -353,7 +353,10 @@ export default function App() {
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '0.35rem',
-                          boxShadow: '0 2px 8px -2px rgba(0,0,0,0.05)'
+                          boxShadow: '0 2px 8px -2px rgba(0,0,0,0.05)',
+                          width: '100%',
+                          maxWidth: '100%',
+                          boxSizing: 'border-box'
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                             <span style={{ fontSize: '1rem' }}>🚌</span>
