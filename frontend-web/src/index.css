@@ -189,9 +189,33 @@ body {
   .map-container-wrapper {
     order: 3;
     width: 100%;
-    height: 340px;
+    height: auto;
     flex-shrink: 0;
     border-bottom: 1.5px solid hsl(var(--border));
+    padding: 1.25rem;
+    background: hsl(var(--card));
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .map-widgets-container {
+    position: static;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    pointer-events: auto;
+  }
+  .map-widget {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  .map-svg-container {
+    position: relative !important;
+    width: 100%;
+    height: 320px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
   }
   .sidebar-results {
     order: 4;

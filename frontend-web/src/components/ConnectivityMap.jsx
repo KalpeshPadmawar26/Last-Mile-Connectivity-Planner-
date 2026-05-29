@@ -82,7 +82,7 @@ export default function ConnectivityMap({ selectedTrip }) {
 
       {/* Primary Visual Canvas - Premium SVG Vector Map representation */}
       {/* Fully responsive, supporting interactive hover effects, animated path drawing */}
-      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      <div className="map-svg-container" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, overflow: 'hidden' }}>
         <svg 
           viewBox="0 0 700 500" 
           style={{ 
