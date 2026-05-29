@@ -343,7 +343,7 @@ export default function App() {
                       
                       {/* Detailed Bus Specification card containing: Bus No, From-To-Via, Departure Time */}
                       {segment.mode === 'msrtc' && segment.busNumber && (
-                        <div style={{
+                        <div className="timeline-bus-detail" style={{
                           marginTop: '0.4rem',
                           padding: '0.6rem 0.8rem',
                           background: 'linear-gradient(135deg, hsl(var(--msrtc-red) / 0.08) 0%, hsl(var(--secondary) / 0.5) 100%)',
@@ -354,11 +354,10 @@ export default function App() {
                           flexDirection: 'column',
                           gap: '0.35rem',
                           boxShadow: '0 2px 8px -2px rgba(0,0,0,0.05)',
-                          width: '100%',
-                          maxWidth: '100%',
-                          boxSizing: 'border-box'
+                          wordBreak: 'break-word',
+                          overflowWrap: 'anywhere'
                         }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                             <span style={{ fontSize: '1rem' }}>🚌</span>
                             <strong>बस क्रमांक (Bus No):</strong> 
                             <span style={{ 
@@ -370,7 +369,7 @@ export default function App() {
                               letterSpacing: '0.02em'
                             }}>{segment.busNumber}</span>
                           </div>
-                          <div>
+                          <div style={{ wordBreak: 'break-word' }}>
                             <span style={{ fontSize: '1rem' }}>🗺️</span> 
                             <strong>मार्ग (Route):</strong> {segment.from} ➔ {segment.to} <span style={{ color: 'hsl(var(--muted-foreground))', fontStyle: 'italic' }}>({segment.routeVia})</span>
                           </div>

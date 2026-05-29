@@ -61,7 +61,7 @@ export default function ConnectivityMap({ selectedTrip }) {
         </div>
 
         {selectedTrip && (
-          <div className="map-widget" style={{ maxWidth: '280px' }}>
+          <div className="map-widget active-route-widget">
             <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'hsl(var(--primary))' }}>
               सक्रिय प्रवासाचा मार्ग (Active Route)
             </span>
@@ -82,7 +82,7 @@ export default function ConnectivityMap({ selectedTrip }) {
 
       {/* Primary Visual Canvas - Premium SVG Vector Map representation */}
       {/* Fully responsive, supporting interactive hover effects, animated path drawing */}
-      <div className="map-svg-container" style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      <div className="map-svg-container">
         <svg 
           viewBox="0 0 700 500" 
           style={{ 
@@ -251,6 +251,7 @@ export default function ConnectivityMap({ selectedTrip }) {
 
       {/* Elegant Compass indicator */}
       <div 
+        className="map-compass-indicator"
         style={{ 
           position: 'absolute', 
           bottom: '1.5rem', 

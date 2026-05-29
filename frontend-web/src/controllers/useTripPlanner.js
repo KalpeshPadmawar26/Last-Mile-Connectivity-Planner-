@@ -56,6 +56,111 @@ const AUTOCORRECT_DICT = {
   "लोहार": "लोहारा"
 };
 
+// Regional weekly market (बाजार) database for Maharashtra rural towns
+// Format: { keywords: [], dayEn: '', dayMr: '', marketNameEn: '', marketNameMr: '', noteEn: '', noteMr: '' }
+const REGIONAL_MARKET_DB = [
+  {
+    keywords: ['yavatmal', 'यवतमाळ', 'yawatmal', 'yotmal'],
+    dayEn: 'Monday', dayMr: 'सोमवार',
+    marketNameEn: 'Yavatmal Main Bazaar', marketNameMr: 'यवतमाळ मुख्य बाजार',
+    noteEn: 'Heavy auto & ST rush on Mondays. Book early.',
+    noteMr: 'सोमवारी ऑटो व एसटी मध्ये गर्दी. आधीच नियोजन करा.'
+  },
+  {
+    keywords: ['arni', 'आर्णी', 'arnie'],
+    dayEn: 'Wednesday', dayMr: 'बुधवार',
+    marketNameEn: 'Arni Weekly Bazaar', marketNameMr: 'आर्णी आठवडी बाजार',
+    noteEn: 'Arni Wednesday bazaar — shared autos fill fast.',
+    noteMr: 'आर्णीचा बुधवारी बाजार — शेअर्ड ऑटो लवकर भरतात.'
+  },
+  {
+    keywords: ['chandrapur', 'चंद्रपूर', 'chandrpur'],
+    dayEn: 'Sunday', dayMr: 'रविवार',
+    marketNameEn: 'Chandrapur Bazaar', marketNameMr: 'चंद्रपूर बाजार',
+    noteEn: 'Sunday market at Chandrapur — peak bus usage.',
+    noteMr: 'चंद्रपूरचा रविवार बाजार — बसेस गर्दीने भरलेल्या असतात.'
+  },
+  {
+    keywords: ['nagpur', 'नागपूर', 'nagpore'],
+    dayEn: 'Wednesday', dayMr: 'बुधवार',
+    marketNameEn: 'Nagpur Weekly Bazaar', marketNameMr: 'नागपूर साप्ताहिक बाजार',
+    noteEn: 'Wednesday is Nagpur market day. Heavy rush on shared vehicles.',
+    noteMr: 'बुधवारी नागपूरचा साप्ताहिक बाजार — ऑटो व बसमध्ये अत्यंत गर्दी.'
+  },
+  {
+    keywords: ['ghatanji', 'घाटनजी'],
+    dayEn: 'Thursday', dayMr: 'गुरुवार',
+    marketNameEn: 'Ghatanji Bazaar', marketNameMr: 'घाटनजी बाजार',
+    noteEn: 'Ghatanji Thursday market — ST buses crowded from morning.',
+    noteMr: 'घाटनजीचा गुरुवारी बाजार — सकाळपासूनच एसटी भरलेल्या असतात.'
+  },
+  {
+    keywords: ['dhamangaon', 'धामणगाव'],
+    dayEn: 'Friday', dayMr: 'शुक्रवार',
+    marketNameEn: 'Dhamangaon Bazaar', marketNameMr: 'धामणगाव बाजार',
+    noteEn: 'Dhamangaon Friday market — trains and buses fill up.',
+    noteMr: 'धामणगावचा शुक्रवारी बाजार — रेल्वे व बसमध्ये गर्दी असते.'
+  },
+  {
+    keywords: ['lohara', 'लोहारा'],
+    dayEn: 'Tuesday', dayMr: 'मंगळवार',
+    marketNameEn: 'Lohara Village Bazaar', marketNameMr: 'लोहारा गाव बाजार',
+    noteEn: 'Lohara Tuesday bazaar — shared vehicles limited.',
+    noteMr: 'लोहाराचा मंगळवारी बाजार — शेअर्ड वाहने मर्यादित असतात.'
+  },
+  {
+    keywords: ['sawargaon', 'सावरगाव', 'savargaon'],
+    dayEn: 'Saturday', dayMr: 'शनिवार',
+    marketNameEn: 'Sawargaon Bazaar', marketNameMr: 'सावरगाव बाजार',
+    noteEn: 'Sawargaon Saturday market — book auto in advance.',
+    noteMr: 'सावरगावचा शनिवारी बाजार — आधीच ऑटो बुक करा.'
+  },
+  {
+    keywords: ['kalmeshwar', 'कळमेश्वर'],
+    dayEn: 'Monday', dayMr: 'सोमवार',
+    marketNameEn: 'Kalmeshwar Bazaar', marketNameMr: 'कळमेश्वर बाजार',
+    noteEn: 'Kalmeshwar Monday bazaar — ST Stand crowded.',
+    noteMr: 'कळमेश्वरचा सोमवारी बाजार — एसटी स्थानकावर गर्दी असते.'
+  },
+  {
+    keywords: ['pune', 'पुणे', 'poona'],
+    dayEn: 'Sunday', dayMr: 'रविवार',
+    marketNameEn: 'Pune Mandai Bazaar', marketNameMr: 'पुणे मंडई बाजार',
+    noteEn: 'Pune Mandai is busy Sundays. Auto & bus rush near depot.',
+    noteMr: 'पुणे मंडई रविवारी गजबजलेली असते. डेपोजवळ ऑटो-बस गर्दी.'
+  }
+];
+
+const DAYS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAYS_MR = ['रविवार', 'सोमवार', 'मंगळवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+
+/**
+ * Returns a dynamic market alert string if any market town matches the route
+ * on the same day as the user's selected travel date.
+ * If no date is given, checks against today.
+ */
+function getMarketAlert(from, to, travelDate, lang) {
+  const combinedInput = `${from} ${to}`.toLowerCase();
+  const dateObj = travelDate ? new Date(travelDate) : new Date();
+  const dayIndex = dateObj.getDay(); // 0=Sun, 1=Mon...
+  const travelDayEn = DAYS_EN[dayIndex];
+  const travelDayMr = DAYS_MR[dayIndex];
+
+  for (const market of REGIONAL_MARKET_DB) {
+    const matchesLocation = market.keywords.some(kw => combinedInput.includes(kw.toLowerCase()));
+    const matchesDay = market.dayEn === travelDayEn;
+
+    if (matchesLocation && matchesDay) {
+      if (lang === 'mr') {
+        return `⚠️ सूचना: ${travelDayMr} रोजी ${market.marketNameMr} असतो. ${market.noteMr}`;
+      } else {
+        return `⚠️ Notice: ${market.marketNameEn} falls on ${travelDayEn}. ${market.noteEn}`;
+      }
+    }
+  }
+  return null; // No matching market day
+}
+
 /**
  * useTripPlanner Custom Hook - Controller Layer
  * Manages the planning workflow state and business logic orchestration.
@@ -79,17 +184,17 @@ export function useTripPlanner() {
   const [showFromSuggestions, setShowFromSuggestions] = useState(false);
   const [showToSuggestions, setShowToSuggestions] = useState(false);
 
-  // Toggle App Language
+  // Cached search params to regenerate alert on language switch
+  const [lastSearchFrom, setLastSearchFrom] = useState('');
+  const [lastSearchTo, setLastSearchTo] = useState('');
+  const [lastSearchDate, setLastSearchDate] = useState('');
+
+  // Toggle App Language — re-derive market alert in new language
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    
-    // Dynamically update the active alert language if an alert exists
-    if (marketAlert) {
-      if (lng === 'mr') {
-        setMarketAlert("सूचना: बुधवारी नागपूरचा साप्ताहिक बाजार असल्याने ऑटो व बस मध्ये गर्दी असण्याची शक्यता आहे. लवकर नियोजन करा!");
-      } else {
-        setMarketAlert("Notice: Wednesday is Nagpur weekly market day. Heavy rush expected on shared vehicles. Travel early!");
-      }
+    if (lastSearchFrom && lastSearchTo) {
+      const alert = getMarketAlert(lastSearchFrom, lastSearchTo, lastSearchDate, lng);
+      setMarketAlert(alert);
     }
   };
 
@@ -189,6 +294,11 @@ export function useTripPlanner() {
     setShowFromSuggestions(false);
     setShowToSuggestions(false);
 
+    // Save search context for language-switch alert regeneration
+    setLastSearchFrom(from);
+    setLastSearchTo(to);
+    setLastSearchDate(travelDate);
+
     try {
       // Call Model Service
       const foundTrips = await TripService.fetchTrips(from, to, travelDate, arrivalTime);
@@ -197,12 +307,9 @@ export function useTripPlanner() {
       if (foundTrips.length > 0) {
         setSelectedTrip(foundTrips[0]); // Select fastest connection by default
         
-        // Context-aware alert for regional market day
-        if (i18n.language === 'mr') {
-          setMarketAlert("सूचना: बुधवारी नागपूरचा साप्ताहिक बाजार असल्याने ऑटो व बस मध्ये गर्दी असण्याची शक्यता आहे. लवकर नियोजन करा!");
-        } else {
-          setMarketAlert("Notice: Wednesday is Nagpur weekly market day. Heavy rush expected on shared vehicles. Travel early!");
-        }
+        // Dynamic location + date-aware market day alert
+        const alert = getMarketAlert(from, to, travelDate, i18n.language);
+        setMarketAlert(alert); // null if no market day matches — banner hides automatically
       }
     } catch (err) {
       console.error("[useTripPlanner] Searching failed:", err);
