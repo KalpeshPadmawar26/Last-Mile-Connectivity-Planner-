@@ -56,7 +56,7 @@ export default function App() {
         {/* Sleek Logo & Language Switcher */}
         <div className="glass-header">
           <div className="logo-container">
-            <span className="logo-badge">MSRTC+</span>
+            <img src="/logo.png" alt="Logo" style={{ width: '38px', height: '38px', borderRadius: 'var(--radius-sm)', border: '1.5px solid hsl(var(--border))', boxShadow: 'var(--shadow)' }} />
             <div>
               <h1 className="app-title">{t('app_title')}</h1>
               <p className="app-subtitle">{t('app_subtitle')}</p>
@@ -72,7 +72,7 @@ export default function App() {
         </div>
 
         {/* Inputs & Timelines */}
-        <div className="sidebar-content">
+        <div className="sidebar-inputs">
           
           {/* Voice Command Widget */}
           <div style={{ background: 'hsl(var(--secondary) / 0.3)', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid hsl(var(--border))' }}>
@@ -249,6 +249,10 @@ export default function App() {
               {isSearching ? 'नियोजन चालू आहे...' : t('search_btn')}
             </button>
           </div>
+        </div>
+
+        {/* 2. RESULTS SECTION */}
+        <div className="sidebar-results">
 
           {/* Regional Market Alert banner */}
           {marketAlert && (
